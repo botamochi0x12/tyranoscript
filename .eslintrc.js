@@ -14,7 +14,6 @@ module.exports = {
         LZString: true,
         Sound: true,
         TYRANO: true,
-        alertify: true,
         anime: true,
         doScroll: true,
         html2canvas: true,

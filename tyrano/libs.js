@@ -1287,25 +1287,17 @@
     };
 
     /**
-     * 画面右下にトースト通知, alertify
+     * 画面右下にトースト通知
      * ゲーム画面(tyrano_base)よりも外側に出る
      * @param {*} str
      * @param {*} type
      */
     $.inform = (str, type) => {
-        alertify.log(str, type);
+        throw Error("DeprecationError: Don't use `alertify`.");
     };
 
     $.prompt = function (str, cb) {
-
-        alertify.prompt(str, function (flag, text) {
-
-            if (typeof cb == "function") {
-                cb(flag, text);
-            }
-
-        });
-
+        throw Error("DeprecationError: Don't use `alertify`.");
     };
 
     $.isBase64 = function (str) {

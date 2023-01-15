@@ -2458,31 +2458,7 @@ tyrano.plugin.kag.tag.dialog = {
                 },
             );
         } else if (pm.type == "input") {
-            alertify.set({
-                buttonFocus: "none",
-                labels: {
-                    ok: pm.label_ok,
-                    cancel: pm.label_cancel,
-                },
-            });
-            alertify.prompt(pm.text, function (flag, text) {
-                if (flag) {
-                    var name = pm.name;
-                    var val = text;
-                    var str = name + " = '" + val + "'";
-
-                    that.kag.evalScript(str);
-                } else {
-                    pm.storage = pm.storage_cancel;
-                    pm.target = pm.target_cancel;
-                }
-
-                that.finish(pm);
-            });
-
-            $(".alertify-text").on("keydown", function (e) {
-                e.stopPropagation();
-            });
+            throw Error("DeprecationError: Don't use `alertify`.");
         } else {
             //alert
             $.alert(pm.text, function () {
