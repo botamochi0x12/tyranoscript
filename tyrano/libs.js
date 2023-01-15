@@ -1113,53 +1113,53 @@
      * @param {Object} options
      * @param {"alert" | "confirm"} options.type
      * @param {string} options.title
-     * @param {function} on_ok
-     * @param {function} on_cancel
+     * @param {function} options.on_ok
+     * @param {function} options.on_cancel
      */
     $.remodalCommon = function (options = {}) {
-        const j_box = $("[data-remodal-id=modal]");
-        const j_ok = $(".remodal").find("#remodal-confirm");
-        const j_ng = $(".remodal").find("#remodal-cancel");
-        const j_wrapper = $(".remodal-wrapper");
-        const j_button = $([j_ok[0], j_ng[0]]);
-        const j_event = $([j_ok[0], j_ng[0], j_wrapper[0], j_box[0]]);
-        const j_anim = $(".remodal-base").add(j_box);
+        // const j_box = $("[data-remodal-id=modal]");
+        // const j_ok = $(".remodal").find("#remodal-confirm");
+        // const j_ng = $(".remodal").find("#remodal-cancel");
+        // const j_wrapper = $(".remodal-wrapper");
+        // const j_button = $([j_ok[0], j_ng[0]]);
+        // const j_event = $([j_ok[0], j_ng[0], j_wrapper[0], j_box[0]]);
+        // const j_anim = $(".remodal-base").add(j_box);
 
         // <h1> の更新
-        $(".remodal_title").html(options.title);
+        // $(".remodal_title").html(options.title);
 
         // OK 表示
-        j_ok.show().focusable();
-        if (j_ok.hasClass("remodal-image-button")) {
-            j_ok.trigger("init");
-        }
+        // j_ok.show().focusable();
+        // if (j_ok.hasClass("remodal-image-button")) {
+        //     j_ok.trigger("init");
+        // }
 
         // Cancel 表示
         if (options.type === "confirm") {
-            j_ng.show().focusable();
-            if (j_ng.hasClass("remodal-image-button")) {
-                j_ng.trigger("init");
-            }
+            // j_ng.show().focusable();
+            // if (j_ng.hasClass("remodal-image-button")) {
+            //     j_ng.trigger("init");
+            // }
         } else {
-            j_ng.hide();
+            // j_ng.hide();
         }
 
         // ポイント不可
-        j_event.setStyle("pointer-events", "none");
+        // j_event.setStyle("pointer-events", "none");
 
         // remodal 初期化
-        j_box.css("font-family", TYRANO.kag.config.userFace);
-        const inst = j_box.remodal();
+        // j_box.css("font-family", TYRANO.kag.config.userFace);
+        // const inst = j_box.remodal();
 
         // 汎用クローズ処理
         const close_common = () => {
-            j_event.setStyle("pointer-events", "none");
+            // j_event.setStyle("pointer-events", "none");
             TYRANO.kag.key_mouse.vmouse.hide();
             const effect = TYRANO.kag.tmp.remodal_closing_effect;
             if (effect && effect !== "none") {
-                j_box.setStyleMap({ "animation-name": effect }, "webkit");
+                // j_box.setStyleMap({ "animation-name": effect }, "webkit");
                 $(document).on("closed", ".remodal", () => {
-                    j_box.setStyleMap({ "animation-name": "" }, "webkit");
+                    // j_box.setStyleMap({ "animation-name": "" }, "webkit");
                 });
             }
 
@@ -1174,88 +1174,104 @@
         // 旧イベントを消去
         $.removeRemodalEvents(true);
 
-        let mousedown_elm = null;
+        // let mousedown_elm = null;
 
         // ラッパーのクリックでウィンドウを閉じられるようにする
-        j_wrapper
-            .off("mousedown.outerclose click.outerclose")
-            .on("click.outerclose", () => {
-                if (mousedown_elm !== j_wrapper[0]) return;
-                j_box.off("mousedown.outerclose");
-                j_wrapper.off("mousedown.outerclose click.outerclose");
-                if (options.type === "confirm") j_ng.trigger("click");
-            })
-            .on("mousedown.outerclose", () => {
-                mousedown_elm = j_wrapper[0];
-            });
+        // j_wrapper
+        //     .off("mousedown.outerclose click.outerclose")
+        //     .on("click.outerclose", () => {
+        //         if (mousedown_elm !== j_wrapper[0]) return;
+        //         j_box.off("mousedown.outerclose");
+        //         j_wrapper.off("mousedown.outerclose click.outerclose");
+        //         if (options.type === "confirm") j_ng.trigger("click");
+        //     })
+        //     .on("mousedown.outerclose", () => {
+        //         mousedown_elm = j_wrapper[0];
+        //     });
 
         // メッセージボックスのクリックがラッパーに突き抜けないようにする
-        j_box.off("mousedown.outerclose").on("mousedown.outerclose", (e) => {
-            mousedown_elm = j_box[0];
-            e.stopPropagation();
-        });
+        // j_box.off("mousedown.outerclose").on("mousedown.outerclose", (e) => {
+        //     mousedown_elm = j_box[0];
+        //     e.stopPropagation();
+        // });
 
-        j_button.off("click.outerclose").on("click.outerclose", () => {
-            j_box.off("click.outerclose");
-        });
+        // j_button.off("click.outerclose").on("click.outerclose", () => {
+        //     j_box.off("click.outerclose");
+        // });
 
         // 表示完了時
         $(document).on("opened", ".remodal", () => {
             // ポイント可
-            j_event.setStyle("pointer-events", "auto");
+            // j_event.setStyle("pointer-events", "auto");
         });
 
         //
         // ボタンのクリックイベント
         //
 
-        if (options.type === "alert") {
-            // アラート: クローズ時の処理
-            $(document).on("closed", ".remodal", () => {
-                close_common();
-                $.removeRemodalEvents(false);
-                if (typeof options.on_ok === "function") {
-                    options.on_ok();
-                }
-            });
-        }
+        // if (options.type === "alert") {
+        //     // アラート: クローズ時の処理
+        //     $(document).on("closed", ".remodal", () => {
+        //         // close_common();
+        //         $.removeRemodalEvents(false);
+        //         if (typeof options.on_ok === "function") {
+        //             options.on_ok();
+        //         }
+        //     });
+        // }
 
-        if (options.type === "confirm") {
-            // コンファーム: OK 時の処理
-            $(document).on("confirmation", ".remodal", () => {
-                close_common();
-                if (typeof options.on_ok === "function") {
-                    options.on_ok();
-                }
-            });
+        // if (options.type === "confirm") {
+        //     // コンファーム: OK 時の処理
+        //     $(document).on("confirmation", ".remodal", () => {
+        //         // close_common();
+        //         if (typeof options.on_ok === "function") {
+        //             options.on_ok();
+        //         }
+        //     });
 
-            // コンファーム: Cancel 時の処理
-            $(document).on("cancellation", ".remodal", () => {
-                close_common();
-                if (typeof options.on_cancel === "function") {
-                    options.on_cancel();
+        //     // コンファーム: Cancel 時の処理
+        //     $(document).on("cancellation", ".remodal", () => {
+        //         // close_common();
+        //         if (typeof options.on_cancel === "function") {
+        //             options.on_cancel();
+        //         }
+        //     });
+        // }
+        Swal.fire({
+            title: "タイトルに戻ります。よろしいですね？",
+            showCancelButton: true,
+            cancelButtonText: "NG",
+            confirmButtonText: "OK",
+            cancelButtonColor: "red",
+            confirmButtonColor: "green"})
+            .then(res => {
+                if (res.isConfirmed && (typeof options.on_ok === "function")) {
+                    return options.on_ok();
+                    // TODO: 暗転
+                }
+                if (res.isCanceled && (typeof options.on_cancel === "function")) {
+                    return options.on_cancel();
                 }
             });
-        }
 
         //
         // オープンアニメーション
         //
 
         if (TYRANO.kag.tmp.remodal_opening_effect_time !== undefined) {
-            j_anim.setStyleMap({ "animation-duration": TYRANO.kag.tmp.remodal_opening_effect_time }, "webkit");
+            // j_anim.setStyleMap({ "animation-duration": TYRANO.kag.tmp.remodal_opening_effect_time }, "webkit");
         }
 
         // オープン開始時にアニメクラスを付ける, オープン完了時に外す
         const opening_effect = TYRANO.kag.tmp.remodal_opening_effect;
         if (opening_effect && opening_effect !== "none") {
             $(document).on("opening", ".remodal", () => {
-                j_box.setStyleMap({ "animation-name": opening_effect }, "webkit");
+                // j_box.setStyleMap({ "animation-name": opening_effect }, "webkit");
             });
             $(document).on("opened", ".remodal", () => {
-                j_box.setStyleMap({ "animation-name": "" }, "webkit");
+                // j_box.setStyleMap({ "animation-name": "" }, "webkit");
                 if (TYRANO.kag.tmp.remodal_closing_effect_time !== undefined) {
-                    j_anim.setStyleMap({ "animation-duration": TYRANO.kag.tmp.remodal_closing_effect_time }, "webkit");
+                    // j_anim.setStyleMap({ "animation-duration": TYRANO.kag.tmp.remodal_closing_effect_time }, "webkit");
                 }
             });
         }
@@ -1264,7 +1280,7 @@
         // 開く
         //
 
-        inst.open();
+        // inst.open();
     };
 
     /**
