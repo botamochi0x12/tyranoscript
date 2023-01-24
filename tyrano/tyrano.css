@@ -874,78 +874,6 @@ html.vmouse-displayed * {
     cursor: none !important;
 }
 
-/* remodal のカスタマイズ
---------------------------------------*/
-
-/* ボタン */
-#remodal-confirm,
-#remodal-cancel {
-    cursor: pointer;
-    -moz-user-select: none;
-    user-select: none;
-    -webkit-user-drag: none;
-    margin: 0 2px;
-}
-
-/* ボタン(画像) */
-img#remodal-confirm,
-img#remodal-cancel {
-    display: inline-block;
-}
-
-/* メッセージボックス */
-/*
-[data-remodal-id="modal"] {
-}
-*/
-
-/* 背景となるアウター要素 */
-.remodal-wrapper .remodal-base,
-.remodal-wrapper .remodal-base .remodal-image,
-.remodal-wrapper .remodal-boxbase {
-    display: block;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: -1;
-    background-image: none;
-    background-color: transparent;
-    background-repeat: no-repeat;
-    background-size: auto;
-    background-position: center;
-    opacity: 1;
-    pointer-events: none;
-}
-
-/* メッセージボックスのテキスト */
-.remodal-wrapper .remodal_title,
-.remodal-wrapper .remodal_txt {
-    pointer-events: auto;
-    user-select: auto;
-    cursor: auto;
-}
-
-/*-- キーフレアニメ --*/
-.remodal-is-opening .remodal-base,
-.remodal-is-closing .remodal-base {
-    -webkit-animation-duration: 0.3s;
-    animation-duration: 0.3s;
-    -webkit-animation-fill-mode: forwards;
-    animation-fill-mode: forwards;
-}
-
-.remodal-is-opening .remodal-base {
-    -webkit-animation-name: remodal-overlay-opening-keyframes;
-    animation-name: remodal-overlay-opening-keyframes;
-}
-
-.remodal-is-closing .remodal-base {
-    -webkit-animation-name: remodal-overlay-closing-keyframes;
-    animation-name: remodal-overlay-closing-keyframes;
-}
-
 /* スキップ開始時・終了時などに画面中央に出すエフェクト
 --------------------------------------*/
 
@@ -1108,7 +1036,7 @@ img#remodal-cancel {
 
 
 #three-cursor{
-    
+
     position: fixed;
 
     /*丸の大きさと色の指定*/
