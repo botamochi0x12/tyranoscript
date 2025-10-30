@@ -1,15 +1,60 @@
+/**
+ * @typedef {Object} ConfigMap
+ * @property {string} [key] - Configuration key-value pairs
+ */
+
+/**
+ * @typedef {Object} ParsedTag
+ * @property {number} line - Line number in source
+ * @property {string} name - Tag name
+ * @property {Object.<string, string>} pm - Parameters map
+ * @property {string} val - Tag value
+ * @property {boolean} [is_entity_disabled] - Whether entity processing is disabled
+ */
+
+/**
+ * @typedef {Object} LabelInfo
+ * @property {number} line - Line number
+ * @property {number} index - Index in scenario array
+ * @property {string} label_name - Label name
+ * @property {string} val - Label display value
+ */
+
+/**
+ * @typedef {Object} ParsedScenario
+ * @property {ParsedTag[]} array_s - Array of parsed scenario elements
+ * @property {Object.<string, LabelInfo>} map_label - Map of labels to their info
+ */
+
+/**
+ * KAG parser for TyranoScript scenario files
+ * @namespace
+ */
 tyrano.plugin.kag.parser = {
+    /** @type {Object|null} */
     tyrano: null,
+    /** @type {Object|null} */
     kag: null,
 
-    flag_script: false, //スクリプト解析中なら
+    /** @type {boolean} スクリプト解析中なら */
+    flag_script: false,
+    /** @type {number} */
     deep_if: 0,
 
+    /**
+     * Initialize the parser
+     * @returns {void}
+     */
     init: function () {
         //alert("kag.parser 初期化");
         //this.tyrano.test();
     },
 
+    /**
+     * Load configuration from Config.tjs file
+     * @param {function(ConfigMap): void} [call_back] - Callback function to receive parsed config
+     * @returns {void}
+     */
     loadConfig: function (call_back) {
         var that = this;
 
@@ -23,11 +68,18 @@ tyrano.plugin.kag.parser = {
         });
     },
 
-    //コンフィグファイルをデータ構造に格納
+    /**
+     * コンフィグファイルをデータ構造に格納
+     * @param {string} text_str - Config file content as string
+     * @returns {ConfigMap} Parsed configuration object
+     */
     compileConfig: function (text_str) {
+        /** @type {string} */
         var error_str = "";
+        /** @type {ConfigMap} */
         var map_config = {};
 
+        /** @type {string[]} */
         var array_config = text_str.split("\n");
 
         for (var i = 0; i < array_config.length; i++) {
@@ -60,15 +112,23 @@ tyrano.plugin.kag.parser = {
         return map_config;
     },
 
-    //シナリオをオブジェクト化する
+    /**
+     * シナリオをオブジェクト化する
+     * @param {string} text_str - Scenario file content as string
+     * @returns {ParsedScenario} Parsed scenario with elements array and label map
+     */
     parseScenario: function (text_str) {
+        /** @type {ParsedTag[]} */
         var array_s = [];
 
-        var map_label = {}; //ラベル一覧
+        /** @type {Object.<string, LabelInfo>} ラベル一覧 */
+        var map_label = {};
 
+        /** @type {string[]} */
         var array_row = text_str.split("\n");
 
-        var flag_comment = false; //コメント中なら
+        /** @type {boolean} コメント中なら */
+        var flag_comment = false;
 
         for (var i = 0; i < array_row.length; i++) {
             var line_str = $.trim(array_row[i]);
@@ -105,6 +165,7 @@ tyrano.plugin.kag.parser = {
                     chara_name = tmp_line;
                 }
                 //キャラクターボックスへの名前表示
+                /** @type {ParsedTag} */
                 var text_obj = {
                     line: i,
                     name: "chara_ptext",
@@ -129,6 +190,7 @@ tyrano.plugin.kag.parser = {
                     label_val = $.trim(label_tmp[1]);
                 }
 
+                /** @type {ParsedTag} */
                 var label_obj = {
                     name: "label",
                     pm: {
@@ -237,6 +299,7 @@ tyrano.plugin.kag.parser = {
                         deep_kakko++;
                         //この時点で格納されているテキストがあれば配列に追加
                         if (text != "") {
+                            /** @type {ParsedTag} */
                             const text_obj = {
                                 line: i,
                                 name: "text",
@@ -275,13 +338,15 @@ tyrano.plugin.kag.parser = {
                 }
                 //　この時点でテキストがあれば配列に追加
                 if (text) {
-                    array_s.push({
+                    /** @type {ParsedTag} */
+                    const final_text_obj = {
                         line: i,
                         name: "text",
                         pm: { val: text },
                         val: text,
                         is_entity_disabled: true,
-                    });
+                    };
+                    array_s.push(final_text_obj);
                 }
 
                 //console.log(array_char);
@@ -292,6 +357,7 @@ tyrano.plugin.kag.parser = {
         //翻訳が必要な場合はここでarray_sの中身を解析して翻訳する
         this.kag.convertLang(this.kag.stat.current_scenario, array_s);
 
+        /** @type {ParsedScenario} */
         var result_obj = {
             array_s: array_s,
             map_label: map_label,
@@ -305,9 +371,15 @@ tyrano.plugin.kag.parser = {
         return result_obj;
     },
 
-    //タグ情報から、オブジェクトを作成して返却する
+    /**
+     * タグ情報から、オブジェクトを作成して返却する
+     * @param {string} str - Tag string to parse
+     * @param {number} line - Line number in source file
+     * @returns {ParsedTag} Parsed tag object
+     */
     makeTag: function (str, line) {
         var that = this;
+        /** @type {ParsedTag} */
         var obj = {
             line: line,
             name: "",
@@ -315,21 +387,37 @@ tyrano.plugin.kag.parser = {
             val: "",
         };
 
-        var array_c = str.split(""); // 1文字ずつバラす
-        var flag_escape = false; // エスケープ中？
+        /** @type {string[]} 1文字ずつバラす */
+        var array_c = str.split("");
+        /** @type {boolean} エスケープ中？ */
+        var flag_escape = false;
+        /** @type {number} */
         var SCANNING_TAG_NAME = 1;
+        /** @type {number} */
         var SCANNING_PARAM_NAME = 2;
+        /** @type {number} */
         var SCANNING_EQUAL = 3;
+        /** @type {number} */
         var SCANNING_START_QUOT = 4;
+        /** @type {number} */
         var SCANNING_PARAM_VALUE = 5;
-        var scanning_state = SCANNING_TAG_NAME; // 最初はタグ名検出モード
-        var tag_name = ""; // タグ名記憶用
-        var param_name = ""; // パラメータキー記憶用
-        var param_value = ""; // パラメータバリュー記憶用
-        var end_char_of_param_value = ""; // パラメータバリューの記述終了を検出する文字(クォート3種か空白)
+        /** @type {number} 最初はタグ名検出モード */
+        var scanning_state = SCANNING_TAG_NAME;
+        /** @type {string} タグ名記憶用 */
+        var tag_name = "";
+        /** @type {string} パラメータキー記憶用 */
+        var param_name = "";
+        /** @type {string} パラメータバリュー記憶用 */
+        var param_value = "";
+        /** @type {string} パラメータバリューの記述終了を検出する文字(クォート3種か空白) */
+        var end_char_of_param_value = "";
+        /** @type {string} */
         var keepSpaceConfig = that.kag.config.KeepSpaceInParameterValue;
 
-        // パラメータが確定したときの処理を共通化
+        /**
+         * パラメータが確定したときの処理を共通化
+         * @returns {void}
+         */
         function makeParam() {
             obj.pm[param_name] = param_value;
             // パラメータの値をトリミング（両端の空白を削除）
@@ -506,5 +594,9 @@ tyrano.plugin.kag.parser = {
         return obj;
     },
 
+    /**
+     * Test function (placeholder)
+     * @returns {void}
+     */
     test: function () { },
 };
