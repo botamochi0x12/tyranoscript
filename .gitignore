@@ -16,3 +16,6 @@ studio_config.json
 # Node, npm
 node_modules
 package-lock.json
+
+# Vite build output
+dist/

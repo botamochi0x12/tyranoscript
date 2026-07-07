@@ -1,0 +1,311 @@
+html,
+body,
+#app {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    overflow: hidden;
+}
+
+body {
+    font-family: "Hiragino Kaku Gothic ProN", "Noto Sans JP", "Yu Gothic", "Meiryo", sans-serif;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.ty-viewport {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ty-stage {
+    position: relative;
+    flex: none;
+    background: #000;
+    transform-origin: center center;
+}
+
+.ty-layer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.ty-image {
+    position: absolute;
+}
+
+.ty-ptext {
+    position: absolute;
+    color: #fff;
+    white-space: nowrap;
+    line-height: 1.2;
+}
+
+.ty-chara-layer .ty-chara {
+    position: absolute;
+    bottom: 0;
+}
+
+/* ---- message window ---- */
+
+.ty-msg-wrapper {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.ty-msg-box {
+    position: absolute;
+}
+
+.ty-msg-frame {
+    position: absolute;
+    inset: 0;
+    background-color: #000;
+    background-size: 100% 100%;
+    border-radius: 4px;
+}
+
+.ty-msg-inner {
+    position: absolute;
+    color: #fff;
+    font-size: 24px;
+    line-height: 1.6;
+    overflow: hidden;
+    overflow-wrap: anywhere;
+}
+
+.ty-msg-inner.ty-vertical {
+    writing-mode: vertical-rl;
+}
+
+.ty-glyph {
+    display: inline-block;
+    margin-left: 6px;
+    animation: ty-glyph-blink 0.9s ease-in-out infinite;
+    font-size: 0.7em;
+}
+
+@keyframes ty-glyph-blink {
+    0%,
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    50% {
+        opacity: 0.3;
+        transform: translateY(3px);
+    }
+}
+
+.ty-link {
+    color: #8fd3ff;
+    text-decoration: underline;
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+.ty-link:hover {
+    color: #cdeaff;
+}
+
+/* ---- buttons ---- */
+
+.ty-fix,
+.ty-front-buttons {
+    pointer-events: none;
+}
+
+.ty-button {
+    position: absolute;
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+.ty-glink {
+    position: absolute;
+    pointer-events: auto;
+    cursor: pointer;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    color: #fff;
+    font-size: 24px;
+    text-align: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    transition: filter 0.15s ease, transform 0.05s ease;
+    background: linear-gradient(#666, #333);
+}
+
+.ty-glink:hover {
+    filter: brightness(1.25);
+}
+
+.ty-glink:active {
+    transform: translateY(1px);
+}
+
+.ty-glink-blue {
+    background: linear-gradient(#4a90d9, #23527c);
+}
+
+.ty-glink-red {
+    background: linear-gradient(#d9534f, #8b2e2b);
+}
+
+.ty-glink-green {
+    background: linear-gradient(#5cb85c, #356635);
+}
+
+.ty-menu-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 190;
+    padding: 6px 14px;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.45);
+    color: #fff;
+    font-size: 14px;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+}
+
+.ty-menu-button:hover {
+    background: rgba(0, 0, 0, 0.7);
+}
+
+/* ---- overlays ---- */
+
+.ty-overlay-root {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.ty-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: auto;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ty-panel {
+    width: 70%;
+    max-height: 80%;
+    background: rgba(20, 22, 28, 0.96);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.ty-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 18px;
+    font-size: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.ty-panel-close {
+    border: none;
+    background: transparent;
+    color: #fff;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+.ty-menu-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px 40px 30px;
+}
+
+.ty-menu-item {
+    padding: 12px;
+    font-size: 20px;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.ty-menu-item:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.ty-slot-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.ty-slot {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    text-align: left;
+    padding: 14px;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.ty-slot:disabled {
+    opacity: 0.4;
+    cursor: default;
+}
+
+.ty-slot:not(:disabled):hover {
+    background: rgba(255, 255, 255, 0.16);
+}
+
+.ty-slot-no {
+    font-weight: bold;
+    flex: none;
+}
+
+.ty-slot-body {
+    white-space: pre-line;
+    overflow: hidden;
+}
+
+.ty-backlog {
+    padding: 16px 24px;
+    overflow-y: auto;
+    font-size: 18px;
+    line-height: 1.7;
+}
+
+.ty-backlog-row {
+    margin-bottom: 10px;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.12);
+    padding-bottom: 6px;
+}
+
+.ty-backlog-name {
+    color: #9ecbff;
+    margin-right: 8px;
+}

@@ -1,27 +1,19 @@
 {
-	"name": "tyranoscript",
-	"main": "app://./index.html",
-	"window": {
-		"title": "setup tyrano engine",
-		"icon": "link.png",
-		"toolbar": false,
-		"frame": true,
-		"width": 640,
-		"height": 480,
-		"position": "mouse",
-		"min_width": 640,
-		"min_height": 480
-	},
-	"webkit": {
-		"plugin": true
-	},
-	"scripts": {
-		"lint": "eslint --ext .js ./tyrano",
-		"format": "prettier --write ./tyrano/**/*.js"
-	},
-	"devDependencies": {
-		"eslint": "^8.20.0",
-		"eslint-config-prettier": "^8.5.0",
-		"prettier": "^2.7.1"
-	}
+    "name": "tyranoscript",
+    "version": "6.0.0-modern",
+    "private": true,
+    "type": "module",
+    "description": "TyranoScript visual novel engine reimplemented on a modern stack (TypeScript + Vite, dependency-free runtime)",
+    "scripts": {
+        "dev": "vite",
+        "build": "vite build",
+        "preview": "vite preview",
+        "test": "vitest run",
+        "typecheck": "tsc --noEmit"
+    },
+    "devDependencies": {
+        "typescript": "~5.9.2",
+        "vite": "^7.1.0",
+        "vitest": "^3.2.4"
+    }
 }
